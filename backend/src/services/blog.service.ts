@@ -16,6 +16,9 @@ export async function get(id: string) {
     where: { id, AND: { isDeleted: false } },
   });
 }
-export async function getall() {
-  return await DBconnection.blog.findMany({ where: { isDeleted: false } });
+
+export async function getall(userId?: string) {
+  return await DBconnection.blog.findMany({
+    where: { isDeleted: false, AND: userId ? { userId } : {} },
+  });
 }
