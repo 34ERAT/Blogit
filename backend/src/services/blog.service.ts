@@ -11,12 +11,17 @@ export async function createBlog(blog: Blog) {
     data: blog,
   });
 }
-export async function getBlog(id: string) {
+export async function getBlogById(id: string) {
   return await DBconnection.blog.findUnique({
     where: { id, AND: { isDeleted: false } },
   });
 }
 
+export async function removeBlog(id: string, userId: string) {
+  return await DBconnection.blog.delete({
+    where: { id, AND: { isDeleted: false, userId } },
+  });
+}
 export async function getall(userId?: string) {
   return await DBconnection.blog.findMany({
     where: { isDeleted: false, AND: userId ? { userId } : {} },
