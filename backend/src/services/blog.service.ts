@@ -12,8 +12,10 @@ export async function create(blog: Blog) {
   });
 }
 export async function get(id: string) {
-  return await DBconnection.blog.findUnique({ where: { id } });
+  return await DBconnection.blog.findUnique({
+    where: { id, AND: { isDeleted: false } },
+  });
 }
 export async function getall() {
-  return await DBconnection.blog.findMany();
+  return await DBconnection.blog.findMany({ where: { isDeleted: false } });
 }
