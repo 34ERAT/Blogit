@@ -12,8 +12,8 @@ export const patchUser = asyncHandler(
 );
 export const patchPassword = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const modifiedPassword: User = req.body;
-    const password = await updateUser(modifiedPassword);
-    password ? res.status(200).json({ message: "password modified" }) : next();
+    const { _password, newPassword, id } = req.body;
+    const user = await updateUser({ id, password: newPassword });
+    user ? res.status(200).json({ message: "password modified" }) : next();
   },
 );
