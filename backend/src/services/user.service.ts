@@ -12,6 +12,8 @@ export async function createUser(user: User) {
     data: user,
   });
 }
-export async function getUser(id: string) {
-  return await DBconnection.user.findUnique({ where: { id } });
+export async function getUser(eMail_UserName: string) {
+  return await DBconnection.user.findFirst({
+    where: { OR: [{ email: eMail_UserName }, { username: eMail_UserName }] },
+  });
 }
