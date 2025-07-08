@@ -1,8 +1,8 @@
 import { Router } from "express";
-//TODO: connect  user routers to controller
+import { getBlogByUser, patchPassword, patchUser } from "../controller";
 const router = Router();
-router.patch("/");
-router.patch("/password");
-router.get("/blogs");
+router.patch("/", patchUser);
+router.patch("/password", patchPassword);
+router.get("/blogs", getBlogByUser);
 
 export default router;

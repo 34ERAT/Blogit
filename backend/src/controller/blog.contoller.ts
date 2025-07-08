@@ -13,36 +13,37 @@ export const newBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const newBlog: Blog = req.body;
     const createdBlog = await createBlog(newBlog);
-    createdBlog ? res.status(201).json(createBlog) : next();
+    createdBlog ? res.status(201).json(createdBlog) : next();
   },
 );
 export const patchBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const modifiedBlog: Blog = req.body;
+    modifiedBlog.id = req.params.blogId;
     const blog = await updateBlog(modifiedBlog);
     blog ? res.status(200).json(blog) : next();
   },
 );
 export const deleteBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { blogId } = req.params;
     const { userId } = req.body;
-    const blog = await removeBlog(id, userId);
-    blog ? res.status(204).json({ message: "delete succefuly" }) : next();
+    const blog = await removeBlog(blogId, userId);
+    blog ? res.status(200).json({ message: "delete succefuly" }) : next();
   },
 );
 export const getBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-    const blog = await getBlogById(id);
+    const { blogId } = req.params;
+    const blog = await getBlogById(blogId);
     blog ? res.status(200).json(blog) : next();
   },
 );
 
 export const getBlogByUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-    const blog = await getall(id);
+    const { blogId } = req.params;
+    const blog = await getall(blogId);
     blog ? res.status(200).json(blog) : next();
   },
 );

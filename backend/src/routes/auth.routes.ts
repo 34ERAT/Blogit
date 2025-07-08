@@ -1,8 +1,8 @@
 import { Router } from "express";
-//TODO: connect auth routers to  their respective controllers
+import { login, logout, register } from "../controller";
 const router = Router();
-router.post("/register");
-router.post("/login");
-router.post("/logout");
+router.post("/register", register);
+router.post("/login", login);
+router.post("/logout", logout);
 
 export default router;
