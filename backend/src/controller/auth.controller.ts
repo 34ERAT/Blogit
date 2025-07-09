@@ -23,13 +23,11 @@ export const login = asyncHandler(
       return;
     }
     const match = await bycrypt.compare(password, user?.password as string);
-    const { username, id } = user as User;
+    const { id } = user as User;
     if (match) {
-      const token = jwt.sign(
-        { username, id },
-        process.env.JWTSECRET as string,
-        { expiresIn: "1h" },
-      );
+      const token = jwt.sign({ id }, process.env.JWTSECRET as string, {
+        expiresIn: "1h",
+      });
       res.cookie(
         "accessToken",
         { token },
@@ -42,9 +40,8 @@ export const login = asyncHandler(
   },
 );
 export const logout = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const userid = req.body;
-    const user = await getUser(userid);
-    user ? res.status(200).json(user) : next();
+  async (_req: Request, res: Response, _next: NextFunction) => {
+    res.clearCookie("accessToken");
+    res.status(200).json({ message: "loged out" });
   },
 );
