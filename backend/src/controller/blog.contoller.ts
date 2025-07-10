@@ -8,35 +8,39 @@ import {
   removeBlog,
   updateBlog,
 } from "../services";
+import { blogid, editblog, new_Blog, userid } from "../zod";
 
 export const newBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const newBlog: Blog = req.body;
-    const createdBlog = await createBlog(newBlog);
-    createdBlog ? res.status(201).json(createdBlog) : next();
+    await userid.parseAsync(req.body);
+    const blog = await new_Blog.parseAsync(req.body);
+    const createdBlog = await createBlog(blog as Blog);
+    createdBlog ? res.status(201).json(createdBlog) : next(new Error());
   },
 );
 export const patchBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const modifiedBlog: Blog = req.body;
-    modifiedBlog.id = req.params.blogId;
-    const blog = await updateBlog(modifiedBlog);
+    const modifiedBlog = await editblog.parseAsync(req.body);
+    const { blogId: id } = await blogid.parseAsync(req.params);
+    const blog = await updateBlog({ ...modifiedBlog, id } as Blog);
     blog ? res.status(200).json(blog) : next();
   },
 );
 export const deleteBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { blogId } = req.params;
-    const { userId } = req.body;
-    const blog = await removeBlog(blogId, userId);
-    blog ? res.status(200).json({ message: "delete succefuly" }) : next();
+    const { blogId: id } = await blogid.parseAsync(req.params);
+    const { userId } = await userid.parseAsync(req.body);
+    const blog = await removeBlog(id, userId);
+    blog
+      ? res.status(200).json({ message: "delete succefuly" })
+      : next(new Error());
   },
 );
 export const getBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { blogId } = req.params;
+    const { blogId } = await blogid.parseAsync(req.params);
     const blog = await getBlogById(blogId);
-    blog ? res.status(200).json(blog) : next();
+    blog ? res.status(200).json(blog) : next(new Error());
   },
 );
 
@@ -44,12 +48,12 @@ export const getBlogByUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { blogId } = req.params;
     const blog = await getall(blogId);
-    blog ? res.status(200).json(blog) : next();
+    blog ? res.status(200).json(blog) : next(new Error());
   },
 );
 export const getBlogs = asyncHandler(
   async (_req: Request, res: Response, next: NextFunction) => {
     const blogs = await getall();
-    blogs ? res.status(200).json(blogs) : next();
+    blogs ? res.status(200).json(blogs) : next(new Error());
   },
 );

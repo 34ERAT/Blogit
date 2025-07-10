@@ -1,4 +1,4 @@
-import { Prisma, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import DBconnection from "../util/DBconnection";
 export async function updateUser({ id, ...update }: Prisma.UserUpdateInput) {
   return await DBconnection.user.update({
@@ -7,7 +7,7 @@ export async function updateUser({ id, ...update }: Prisma.UserUpdateInput) {
     omit: { password: true },
   });
 }
-export async function createUser(user: User) {
+export async function createUser(user: Prisma.UserCreateInput) {
   return await DBconnection.user.create({
     data: user,
   });

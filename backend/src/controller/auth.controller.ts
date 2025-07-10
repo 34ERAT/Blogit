@@ -4,22 +4,23 @@ import { createUser, getUser } from "../services";
 import { User } from "@prisma/client";
 import bycrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { signin, signup } from "../zod";
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const newUser: User = req.body;
+    const newUser = await signup.parseAsync(req.body);
     newUser.password = await bycrypt.hash(newUser.password, 10);
     const user = await createUser(newUser);
     user
       ? res.status(200).json({ message: "userCreated successfully" })
-      : next();
+      : next(new Error());
   },
 );
 export const login = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userName_eMail, password } = req.body;
-    const user = await getUser(userName_eMail);
+  async (req: Request, res: Response, _next: NextFunction) => {
+    const { password, eMail, userName } = await signin.parseAsync(req.body);
+    const user = await getUser((eMail as string) || (userName as string));
     if (!user) {
-      next();
+      res.status(404).json({ message: "username or password is wrong" });
       return;
     }
     const match = await bycrypt.compare(password, user?.password as string);
