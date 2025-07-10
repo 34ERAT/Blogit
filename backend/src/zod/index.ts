@@ -36,5 +36,5 @@ export const resetPassword = z
   })
   .refine((data) => data.newPassword == data.confirmPassword, {
     message: "password  don't match",
-    path: ["retype"],
+    path: ["confirmPassword"],
   });
