@@ -6,6 +6,7 @@ import SignUp from "./components/forms/SignUp";
 import SignIn from "./components/forms/SignIn";
 import Blogs from "./components/blogs/Blogs";
 import Blog from "./components/forms/Blog";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
         </Routes>
       </Box>
+      <Toaster position="top-right" />
     </Box>
   );
 }
