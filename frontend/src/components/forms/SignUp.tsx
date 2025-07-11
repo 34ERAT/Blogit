@@ -5,7 +5,6 @@ function SignUp() {
   const navigate = useNavigate();
   return (
     <Box
-      mt={9}
       width={"100%"}
       display={"flex"}
       alignItems={"center"}

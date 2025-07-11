@@ -7,6 +7,7 @@ function SignIn() {
     <Box
       width={"100%"}
       display={"flex"}
+      height={"100%"}
       alignItems={"center"}
       justifyContent={"center"}
     >
@@ -14,7 +15,6 @@ function SignIn() {
         <Stack spacing={2}>
           <TextField label="UserName or Email" required />
           <TextField label="password" required />
-          <TextField label="Confirm password" required />
           <Button variant="contained">sign in</Button>
           <Divider variant="inset"> OR </Divider>
           <Button variant="outlined" onClick={() => navigate("/signup")}>

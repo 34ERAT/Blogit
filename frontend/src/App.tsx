@@ -4,16 +4,19 @@ import NavBar from "./components/navigation/NavBar";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/forms/SignUp";
 import SignIn from "./components/forms/SignIn";
+import Blogs from "./components/blogs/Blogs";
 
 function App() {
   return (
-    <Box display={"flex"} minHeight={"100vh"}>
+    <Box height={"100vh"}>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<h1>i am the home page</h1>} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
-      </Routes>
+      <Box pt={"4.7rem"} height={"100%"} display={"flex"}>
+        <Routes>
+          <Route path="/" element={<Blogs />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+      </Box>
     </Box>
   );
 }
