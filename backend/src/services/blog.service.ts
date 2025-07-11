@@ -28,6 +28,14 @@ export async function removeBlog(id: string, userId: string) {
 export async function getall(userId?: string) {
   return await DBconnection.blog.findMany({
     where: { isDeleted: false, AND: userId ? { userId } : {} },
-    omit: { isDeleted: true },
+    include: {
+      User: {
+        select: {
+          firstname: true,
+          lastname: true,
+        },
+      },
+    },
+    omit: { isDeleted: true, content: true, userId: true },
   });
 }
