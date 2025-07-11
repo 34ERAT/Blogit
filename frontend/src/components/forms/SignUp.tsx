@@ -10,7 +10,6 @@ type SignUp = {
   email: string;
   username: string;
   password: string;
-  // confirmPassword: string;
 };
 type InputState = { value: string; isEmpty: boolean };
 

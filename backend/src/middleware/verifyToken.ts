@@ -16,6 +16,7 @@ export default async function verifyToken(
     token,
     process.env.JWTSECRET as string,
   ) as JwtPayload;
-  req.body.userId = id;
+  req.userId = id;
+  console.log(id);
   next();
 }

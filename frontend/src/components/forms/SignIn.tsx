@@ -67,7 +67,7 @@ function SignIn() {
               setUserName("");
               setPassword("");
               setRequired(false);
-              navigate("user/myBlogs");
+              navigate("/user/blogs");
             }}
           >
             sign in

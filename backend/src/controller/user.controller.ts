@@ -14,7 +14,7 @@ export const patchPassword = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { oldPassword, newPassword: password } =
       await resetPassword.parseAsync(req.body);
-    const { userId: id } = await userid.parseAsync(req.body);
+    const id = await userid.parseAsync(req.userId);
     const user = await updateUser({ id, password });
     user
       ? res.status(200).json({ message: "password modified" })

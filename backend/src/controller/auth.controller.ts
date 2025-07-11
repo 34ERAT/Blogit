@@ -32,7 +32,12 @@ export const login = asyncHandler(
       res.cookie(
         "accessToken",
         { token },
-        { expires: new Date(Date.now() + 3600_000), httpOnly: true },
+        {
+          sameSite: "none",
+          expires: new Date(Date.now() + 3600_000),
+          httpOnly: true,
+          secure: true,
+        },
       );
       res.status(200).json({ message: "success login" });
       return;

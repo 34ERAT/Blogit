@@ -21,9 +21,7 @@ export const new_Blog = z.object({
 export const blogid = z.object({
   blogId: z.string().uuid(),
 });
-export const userid = z.object({
-  userId: z.string().uuid(),
-});
+export const userid = z.string().uuid();
 export const editblog = z.object({
   featuredImage: z.string().optional(),
   title: z.string().optional(),

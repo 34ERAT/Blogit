@@ -7,6 +7,7 @@ import SignIn from "./components/forms/SignIn";
 import Blogs from "./components/blogs/Blogs";
 import Blog from "./components/forms/Blog";
 import { Toaster } from "react-hot-toast";
+import UserBlog from "./components/blogs/UserBlog";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/user/">
+            <Route path="blogs" element={<UserBlog />} />
+          </Route>
         </Routes>
       </Box>
       <Toaster position="top-right" />
