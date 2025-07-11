@@ -13,7 +13,12 @@ function NavBar() {
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
           <Logo />
-          <Stack spacing={2} alignItems={"center"} direction={"row"}>
+          <Stack
+            spacing={2}
+            alignItems={"center"}
+            display={{ xs: "none", md: "flex" }}
+            direction={"row"}
+          >
             <Links />
           </Stack>
           <Button
