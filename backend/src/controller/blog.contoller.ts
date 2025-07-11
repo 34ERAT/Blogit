@@ -12,9 +12,9 @@ import { blogid, editblog, new_Blog, userid } from "../zod";
 
 export const newBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    await userid.parseAsync(req.body);
+    const { userId } = await userid.parseAsync(req.body);
     const blog = await new_Blog.parseAsync(req.body);
-    const createdBlog = await createBlog(blog as Blog);
+    const createdBlog = await createBlog({ ...blog, userId } as Blog);
     createdBlog ? res.status(201).json(createdBlog) : next(new Error());
   },
 );
