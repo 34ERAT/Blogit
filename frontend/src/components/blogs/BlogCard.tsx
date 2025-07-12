@@ -5,17 +5,28 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import DeleteDialog from "./DeleteDialog";
+import { useState } from "react";
 type Props = {
   title: string;
   synopsis: string;
   auther: string;
   img: string;
   avater: string;
+  owner?: boolean;
+  id: string;
 };
-function BlogCard({ img, avater, title, synopsis, auther }: Props) {
+
+function BlogCard({ img, avater, id, title, synopsis, auther, owner }: Props) {
+  const navigate = useNavigate();
+  const [open, setopen] = useState(false);
   return (
     <Card
       sx={{
@@ -36,9 +47,37 @@ function BlogCard({ img, avater, title, synopsis, auther }: Props) {
             <Avatar src={avater} /> <Typography>{auther}</Typography>
           </Stack>
         </Stack>
+        <DeleteDialog
+          id={id}
+          open={open}
+          onClose={() => {
+            setopen(false);
+          }}
+        />
       </CardContent>
       <CardActions>
-        <Button variant="text">Read more</Button>
+        <Stack
+          direction={"row"}
+          width={"100%"}
+          justifyContent={"space-between"}
+        >
+          <Button variant="text">Read more</Button>
+          {owner && (
+            <Stack direction={"row-reverse"}>
+              <IconButton color="warning" onClick={() => setopen(true)}>
+                <DeleteForeverIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  navigate(`/blogs/${id}`);
+                }}
+                color="primary"
+              >
+                <EditIcon />
+              </IconButton>
+            </Stack>
+          )}
+        </Stack>
       </CardActions>
     </Card>
   );

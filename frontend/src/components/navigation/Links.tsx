@@ -18,7 +18,7 @@ function Links() {
           My Blogs
         </Typography>
       </Link>
-      <Link to={"/blog"} style={{ color: "inherit", textDecoration: "none" }}>
+      <Link to={"/blogs"} style={{ color: "inherit", textDecoration: "none" }}>
         <Typography variant="subtitle1" fontWeight={fontWeight}>
           New Blog
         </Typography>

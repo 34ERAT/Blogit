@@ -3,17 +3,22 @@ import BlogCard from "./BlogCard";
 import { faker } from "@faker-js/faker";
 import axiosInstance from "../../config/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import type { Blog } from "../../types";
+import type { NewBlog } from "../../types";
 function UserBlogs() {
   const {
     data: blogs,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["getallBlogs"],
+    queryKey: ["userBlogs"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("/users/blogs");
-      return data;
+      console.log("running");
+      try {
+        const { data } = await axiosInstance.get("/users/blogs");
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 
@@ -30,18 +35,14 @@ function UserBlogs() {
             </Typography>
           ) : (
             blogs?.map(
-              ({
-                id,
-                User: { firstname, lastname },
-                title,
-                synopsis,
-                featuredImage,
-              }: Blog) => (
+              ({ id, User, title, synopsis, featuredImage }: NewBlog) => (
                 <Grid size={{ xs: 3, sm: 1.5, md: 1 }} key={id}>
                   <BlogCard
+                    owner
+                    id={id as string}
                     title={title}
                     synopsis={synopsis}
-                    auther={`${firstname} ${lastname} `}
+                    auther={`${User?.firstname} ${User?.lastname} `}
                     img={featuredImage}
                     avater={faker.image.avatar()}
                   />

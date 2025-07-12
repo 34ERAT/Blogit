@@ -2,12 +2,13 @@ type User = {
   firstname: string;
   lastname: string;
 };
-export type Blog = {
-  id: string;
+export type NewBlog = {
+  id?: string;
   featuredImage: string;
   title: string;
   synopsis: string;
-  createdAt: Date;
-  updatedAt: Date;
-  User: User;
+  createdAt?: Date;
+  updatedAt?: Date;
+  User?: User;
+  content?: string;
 };

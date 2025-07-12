@@ -5,9 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/forms/SignUp";
 import SignIn from "./components/forms/SignIn";
 import Blogs from "./components/blogs/Blogs";
-import Blog from "./components/forms/Blog";
 import { Toaster } from "react-hot-toast";
 import UserBlog from "./components/blogs/UserBlog";
+import Blog from "./components/forms/Blog";
+import EditBlog from "./components/forms/EditBlog";
 
 function App() {
   return (
@@ -18,7 +19,10 @@ function App() {
           <Route path="/" element={<Blogs />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/blogs">
+            <Route index path="" element={<Blog />} />
+            <Route path=":blogId" element={<EditBlog />} />
+          </Route>
           <Route path="/user/">
             <Route path="blogs" element={<UserBlog />} />
           </Route>
