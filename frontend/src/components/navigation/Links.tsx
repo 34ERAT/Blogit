@@ -23,9 +23,14 @@ function Links() {
           New Blog
         </Typography>
       </Link>
-      {/* <Link to={"/"} style={{ color: "inherit", textDecoration: "none" }}> */}
-      {/*   <Typography> Blogs</Typography> */}
-      {/* </Link> */}
+      <Link
+        to={"/user/profile"}
+        style={{ color: "inherit", textDecoration: "none" }}
+      >
+        <Typography variant="subtitle1" fontWeight={fontWeight}>
+          Profile
+        </Typography>
+      </Link>
     </>
   );
 }

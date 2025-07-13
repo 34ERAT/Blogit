@@ -1,14 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, Outlet } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
+import useUserStore from "../store";
 
 function PrivateRoutes() {
-  const {
-    data,
-    // isSuccess,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { loginStatus } = useUserStore();
+  const { isSuccess, isLoading } = useQuery({
     queryKey: ["checkLogin"],
     queryFn: async () => {
       const { data } = await axiosInstance.get("auth/me", {
@@ -23,9 +20,7 @@ function PrivateRoutes() {
 
   if (isLoading) return <div>Loading...</div>; // or a spinner
 
-  if (isError || !data?.status) return <Navigate to="/signin" />;
-
-  return <Outlet />;
+  return loginStatus && isSuccess ? <Outlet /> : <Navigate to="/signin" />;
 }
 
 export default PrivateRoutes;

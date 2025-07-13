@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useUserStore from "../../store";
 type Login = {
   userName?: string;
   eMail?: string;
@@ -11,6 +12,7 @@ type Login = {
 };
 
 function SignIn() {
+  const { setLoginStatus } = useUserStore();
   const navigate = useNavigate();
   const { mutate, isError, isPending } = useMutation({
     mutationKey: ["signin"],
@@ -19,6 +21,7 @@ function SignIn() {
       return data;
     },
     onSuccess: () => {
+      setLoginStatus(true);
       navigate("/user/blogs");
     },
   });

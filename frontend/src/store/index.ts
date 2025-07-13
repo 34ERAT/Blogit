@@ -1,6 +1,10 @@
 import { create } from "zustand";
-const useBlogStrore = create((set) => ({
-  blogId: "",
-  setBlodId: (newBlogId: string) => set({ blogId: newBlogId }),
+type UserStore = {
+  loginStatus: boolean;
+  setLoginStatus: (status: boolean) => void;
+};
+const useUserStore = create<UserStore>((set) => ({
+  loginStatus: false,
+  setLoginStatus: (status: boolean) => set({ loginStatus: status }),
 }));
-export default useBlogStrore;
+export default useUserStore;

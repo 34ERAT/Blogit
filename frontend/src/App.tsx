@@ -11,6 +11,7 @@ import Blog from "./components/forms/Blog";
 import EditBlog from "./components/forms/EditBlog";
 import ReadBlog from "./components/blogs/ReadBlog";
 import PrivateRoutes from "./utils/PrivateRoutes";
+import UserProfile from "./components/forms/UserProfile";
 
 function App() {
   return (
@@ -30,10 +31,11 @@ function App() {
           </Route>
           <Route path="/user/" element={<PrivateRoutes />}>
             <Route path="blogs" element={<UserBlog />} />
+            <Route path="profile" element={<UserProfile />} />
           </Route>
         </Routes>
       </Box>
-      <Toaster position="top-right" />
+      <Toaster position="top-left" />
     </Box>
   );
 }

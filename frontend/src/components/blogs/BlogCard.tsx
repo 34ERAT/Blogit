@@ -39,7 +39,7 @@ function BlogCard({ img, avater, id, title, synopsis, auther, owner }: Props) {
       }}
     >
       <CardMedia sx={{ height: "15rem" }} image={img} />
-      <CardContent>
+      <CardContent sx={{ maxHeight: "50%" }}>
         <Stack spacing={1} justifyContent={"space-between"}>
           <Typography variant="h6">{title}</Typography>
           <Typography variant="body2">{synopsis}</Typography>
