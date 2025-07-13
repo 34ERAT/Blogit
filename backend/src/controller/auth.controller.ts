@@ -51,3 +51,8 @@ export const logout = asyncHandler(
     res.status(200).json({ message: "loged out" });
   },
 );
+export const checkLoginStatus = asyncHandler(
+  async (_req: Request, res: Response, _next: NextFunction) => {
+    res.status(200).json({ status: true });
+  },
+);
