@@ -14,10 +14,15 @@ export const errorHandle = (
     return;
   }
   if (error instanceof PrismaClientKnownRequestError) {
-    if (error.code == "P2002") {
-      const target = error.meta?.target;
-      res.status(400).json({ message: `${target} already exist` });
-      return;
+    const { meta } = error;
+    switch (error.code) {
+      case "P2002":
+        error.meta?.target;
+        res.status(400).json({ message: `${meta?.target} already exist` });
+        return;
+      case "P2025":
+        res.status(400).json({ message: `no record was found` });
+        return;
     }
   }
   console.error(error);

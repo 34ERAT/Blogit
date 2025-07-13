@@ -8,8 +8,8 @@ import { signin, signup } from "../zod";
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const newUser = await signup.parseAsync(req.body);
-    newUser.password = await bycrypt.hash(newUser.password, 10);
-    const user = await createUser(newUser);
+    newUser.password = await bycrypt.hash(newUser.password as string, 10);
+    const user = await createUser(newUser as User);
     user
       ? res.status(200).json({ message: "userCreated successfully" })
       : next(new Error());
@@ -32,7 +32,12 @@ export const login = asyncHandler(
       res.cookie(
         "accessToken",
         { token },
-        { expires: new Date(Date.now() + 3600_000), httpOnly: true },
+        {
+          sameSite: "none",
+          expires: new Date(Date.now() + 3600_000),
+          httpOnly: true,
+          secure: true,
+        },
       );
       res.status(200).json({ message: "success login" });
       return;
@@ -44,5 +49,10 @@ export const logout = asyncHandler(
   async (_req: Request, res: Response, _next: NextFunction) => {
     res.clearCookie("accessToken");
     res.status(200).json({ message: "loged out" });
+  },
+);
+export const checkLoginStatus = asyncHandler(
+  async (_req: Request, res: Response, _next: NextFunction) => {
+    res.status(200).json({ status: true });
   },
 );

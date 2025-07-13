@@ -6,16 +6,15 @@ export default async function verifyToken(
   res: Response,
   next: NextFunction,
 ) {
-  const {
-    accessToken: { token },
-  } = req.cookies;
-  if (!token) {
+  const { accessToken } = req.cookies;
+  if (!accessToken?.token || !accessToken) {
     res.status(400).json({ message: "not token provided" });
+    return;
   }
   const { id } = jwt.verify(
-    token,
+    accessToken?.token,
     process.env.JWTSECRET as string,
   ) as JwtPayload;
-  req.body.userId = id;
+  req.userId = id;
   next();
 }

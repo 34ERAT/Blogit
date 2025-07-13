@@ -5,7 +5,7 @@ export const signup = z.object({
   lastname: z.string(),
   username: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().optional(),
 });
 export const signin = z.object({
   userName: z.string().optional(),
@@ -13,6 +13,7 @@ export const signin = z.object({
   password: z.string(),
 });
 export const new_Blog = z.object({
+  featuredImage: z.string(),
   title: z.string(),
   synopsis: z.string(),
   content: z.string(),
@@ -20,10 +21,9 @@ export const new_Blog = z.object({
 export const blogid = z.object({
   blogId: z.string().uuid(),
 });
-export const userid = z.object({
-  userId: z.string().uuid(),
-});
+export const userid = z.string().uuid();
 export const editblog = z.object({
+  featuredImage: z.string().optional(),
   title: z.string().optional(),
   synopsis: z.string().optional(),
   content: z.string().optional(),
