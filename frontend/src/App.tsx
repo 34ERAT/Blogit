@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import UserBlog from "./components/blogs/UserBlog";
 import Blog from "./components/forms/Blog";
 import EditBlog from "./components/forms/EditBlog";
+import ReadBlog from "./components/blogs/ReadBlog";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   return (
@@ -20,10 +22,13 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/blogs">
-            <Route index path="" element={<Blog />} />
-            <Route path=":blogId" element={<EditBlog />} />
+            <Route element={<PrivateRoutes />}>
+              <Route index path="" element={<Blog />} />
+              <Route path=":blogId" element={<EditBlog />} />
+            </Route>
+            <Route path=":blogId/Read" element={<ReadBlog />} />
           </Route>
-          <Route path="/user/">
+          <Route path="/user/" element={<PrivateRoutes />}>
             <Route path="blogs" element={<UserBlog />} />
           </Route>
         </Routes>

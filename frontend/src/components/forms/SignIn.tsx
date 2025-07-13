@@ -18,6 +18,9 @@ function SignIn() {
       const { data } = await axiosInstance.post("/auth/login", credentials);
       return data;
     },
+    onSuccess: () => {
+      navigate("/user/blogs");
+    },
   });
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -67,7 +70,6 @@ function SignIn() {
               setUserName("");
               setPassword("");
               setRequired(false);
-              navigate("/user/blogs");
             }}
           >
             sign in

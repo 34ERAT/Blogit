@@ -12,13 +12,8 @@ function UserBlogs() {
   } = useQuery({
     queryKey: ["userBlogs"],
     queryFn: async () => {
-      console.log("running");
-      try {
-        const { data } = await axiosInstance.get("/users/blogs");
-        return data;
-      } catch (error) {
-        console.error(error);
-      }
+      const { data } = await axiosInstance.get("/users/blogs");
+      return data;
     },
   });
 
