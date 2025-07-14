@@ -9,7 +9,7 @@ import cors from "cors";
 import verifyToken from "./middleware/verifyToken";
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors({ credentials: true }));
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookiParser());
 app.use("/api/auth", authRoutes);
