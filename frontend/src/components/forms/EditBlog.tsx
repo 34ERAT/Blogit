@@ -26,7 +26,7 @@ function EditBlog() {
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["create-blog"],
     mutationFn: async (newBlog: NewBlog) => {
       const { data } = await axiosInstance.patch(`/blogs/${blogId}`, newBlog);
@@ -86,6 +86,7 @@ function EditBlog() {
           />
         </Stack>
         <Fab
+          disabled={isPending}
           sx={{ position: "absolute", right: "2rem", bottom: "2rem" }}
           color="secondary"
           aria-label="edit"

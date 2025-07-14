@@ -1,5 +1,6 @@
 import { Save } from "@mui/icons-material";
 import ImageIcon from "@mui/icons-material/Image";
+import PendingIcon from "@mui/icons-material/Pending";
 import {
   Box,
   Paper,
@@ -25,7 +26,7 @@ function Blog() {
   const [open, setOpen] = useState(false);
   const [blog, setBlog] = useState(intialState);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const { mutate: mutateNewBlog } = useMutation({
+  const { mutate: mutateNewBlog, isPending: createIsPending } = useMutation({
     mutationKey: ["create-blog"],
     mutationFn: async (newBlog: NewBlog) => {
       const { data } = await axiosInstance.post("/blogs", newBlog);
@@ -36,17 +37,19 @@ function Blog() {
       setBlog({ ...blog, ...intialState });
     },
   });
-  const { mutate: mutateUploadImage } = useMutation({
-    mutationKey: ["uploadImage"],
-    mutationFn: async (image: FormData) => {
-      const { data } = await axiosInstance.post("/images", image);
-      return data;
+  const { mutate: mutateUploadImage, isPending: uploadIsPending } = useMutation(
+    {
+      mutationKey: ["uploadImage"],
+      mutationFn: async (image: FormData) => {
+        const { data } = await axiosInstance.post("/images", image);
+        return data;
+      },
+      onSuccess(data: { url: string }) {
+        toast("uploaded");
+        setBlog({ ...blog, featuredImage: data.url });
+      },
     },
-    onSuccess(data: { url: string }) {
-      toast("uploaded");
-      setBlog({ ...blog, featuredImage: data.url });
-    },
-  });
+  );
   return (
     <Box
       width={"100%"}
@@ -110,13 +113,23 @@ function Blog() {
         </Stack>
 
         <SpeedDial
-          sx={{ position: "absolute", right: "2rem", bottom: "2rem" }}
+          sx={{
+            position: "absolute",
+            right: "2rem",
+            bottom: "2rem",
+          }}
           ariaLabel="add item speedial"
-          icon={<SpeedDialIcon />}
+          icon={
+            uploadIsPending || createIsPending ? (
+              <PendingIcon fontSize="large" />
+            ) : (
+              <SpeedDialIcon />
+            )
+          }
           onClick={() => {
             setOpen(!open);
           }}
-          open={open}
+          open={uploadIsPending || createIsPending ? false : open}
         >
           <SpeedDialAction
             onClick={() => {

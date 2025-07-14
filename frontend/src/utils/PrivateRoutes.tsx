@@ -8,12 +8,11 @@ function PrivateRoutes() {
   const { isSuccess, isLoading } = useQuery({
     queryKey: ["checkLogin"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("auth/me", {
+      const { data } = await axiosInstance.get("/auth/me", {
         withCredentials: true,
       });
       return data;
     },
-    staleTime: 0,
     refetchOnWindowFocus: true,
     refetchOnMount: true, // important
   });
