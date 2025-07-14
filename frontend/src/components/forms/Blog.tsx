@@ -9,31 +9,42 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import type { NewBlog } from "../../types";
-import { faker } from "@faker-js/faker/locale/ro_MD";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
 const intialState: NewBlog = {
   title: " ",
   synopsis: "",
-  featuredImage: faker.image.avatar(),
+  featuredImage: "",
   content: "",
 };
 
 function Blog() {
   const [open, setOpen] = useState(false);
   const [blog, setBlog] = useState(intialState);
-  const { mutate } = useMutation({
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const { mutate: mutateNewBlog } = useMutation({
     mutationKey: ["create-blog"],
     mutationFn: async (newBlog: NewBlog) => {
       const { data } = await axiosInstance.post("/blogs", newBlog);
       return data;
     },
     onSuccess: () => {
-      toast("blog create sucessfull");
+      toast("created ");
       setBlog({ ...blog, ...intialState });
+    },
+  });
+  const { mutate: mutateUploadImage } = useMutation({
+    mutationKey: ["uploadImage"],
+    mutationFn: async (image: FormData) => {
+      const { data } = await axiosInstance.post("/images", image);
+      return data;
+    },
+    onSuccess(data: { url: string }) {
+      toast("uploaded");
+      setBlog({ ...blog, featuredImage: data.url });
     },
   });
   return (
@@ -63,7 +74,25 @@ function Blog() {
                 setBlog({ ...blog, synopsis: value });
               }}
               label="synopsis "
+              type="text"
               fullWidth
+            />
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                const file = event.target.files?.[0];
+                if (!file) {
+                  toast("no file selected");
+                  return;
+                }
+
+                const formData = new FormData();
+                formData.append("image", file);
+                mutateUploadImage(formData);
+              }}
             />
           </Stack>
           <TextField
@@ -91,12 +120,18 @@ function Blog() {
         >
           <SpeedDialAction
             onClick={() => {
-              mutate(blog);
+              mutateNewBlog(blog);
             }}
             icon={<Save />}
             tooltipTitle={"save"}
           />
-          <SpeedDialAction icon={<ImageIcon />} tooltipTitle={"upload image"} />
+          <SpeedDialAction
+            icon={<ImageIcon />}
+            tooltipTitle={"upload image"}
+            onClick={() => {
+              fileInputRef.current?.click();
+            }}
+          />
         </SpeedDial>
       </Paper>
     </Box>

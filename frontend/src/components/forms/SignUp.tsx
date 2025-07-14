@@ -16,7 +16,7 @@ type InputState = { value: string; isEmpty: boolean };
 function SignUp() {
   const navigate = useNavigate();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["signup-key"],
     mutationFn: async (newUser: SignUp) => {
       const { data } = await axiosInstance.post("/auth/register", newUser);
@@ -137,6 +137,7 @@ function SignUp() {
           />
           <Button
             variant="contained"
+            loading={isPending}
             onClick={() => {
               const data = [
                 fstName,
