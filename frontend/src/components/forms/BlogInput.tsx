@@ -1,5 +1,5 @@
 import { Stack, TextField } from "@mui/material";
-import { isEmpty, isRequired } from "../../utils/textField";
+import { isEmpty } from "../../utils/textField";
 import type { CreateBlog } from "../../types";
 
 type Props = {
@@ -19,32 +19,35 @@ function BlogInput({ values, onChange }: Props) {
         <TextField
           name="title"
           error={isEmpty(values.title)}
-          helperText={isRequired(values.title)}
           value={values.title}
           onChange={handleChange}
           label="title "
+          size="small"
+          fullWidth
+          required
         />
         <TextField
           name="synopsis"
           error={values.synopsis == "" ? true : false}
-          helperText={values.synopsis == "" ? "field is required" : false}
           value={values.synopsis}
           onChange={handleChange}
           label="synopsis "
           type="text"
+          size="small"
+          required
           fullWidth
         />
       </Stack>
       <TextField
         name="content"
         error={values.content == "" ? true : false}
-        helperText={values.content == "" ? "field is required" : false}
         value={values.content}
         onChange={handleChange}
         multiline
-        rows={15}
+        rows={16}
         label="Content in markdow"
         fullWidth
+        required
       />
     </Stack>
   );

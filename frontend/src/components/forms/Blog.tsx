@@ -6,6 +6,7 @@ import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
 import BlogInput from "./BlogInput";
 import CreateBlogSpeedDial from "../buttons/CreateBlogSpeedDial";
+import { hasempty } from "../../utils/textField";
 
 function Blog() {
   const [open, setOpen] = useState(false);
@@ -82,7 +83,11 @@ function Blog() {
           onClickImageUpload={() => {
             fileInputRef.current?.click();
           }}
-          open={uploadIsPending || createIsPending ? false : open}
+          open={
+            uploadIsPending || createIsPending || hasempty(Object.values(blog))
+              ? false
+              : open
+          }
         />
       </Paper>
     </Box>

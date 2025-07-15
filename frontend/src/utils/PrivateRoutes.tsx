@@ -15,7 +15,6 @@ function PrivateRoutes() {
       const { data } = await axiosInstance.post("/auth/me", {
         withCredentials: true,
       });
-      console.log("runing");
       return data;
     },
     onSuccess: (data: { status: boolean }) => {
@@ -28,7 +27,6 @@ function PrivateRoutes() {
   useEffect(() => {
     const { pathname } = location;
     if (pathname == `/blogs/${param.blogId}`) {
-      console.log("blogs");
       return;
     }
     mutate();
