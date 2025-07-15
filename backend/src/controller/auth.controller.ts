@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import { signin, signup } from "../zod";
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const newUser = await signup.parseAsync(req.body);
+    const { confirmPassword, ...newUser } = await signup.parseAsync(req.body);
     newUser.password = await bycrypt.hash(newUser.password as string, 10);
     const user = await createUser(newUser as User);
     user

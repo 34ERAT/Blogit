@@ -4,21 +4,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
-type SignUp = {
+import { isEmpty, isRequired } from "../../utils/textField";
+type SignUPBody = {
   firstname: string;
   lastname: string;
   email: string;
   username: string;
   password: string;
+  confirmPassword: string;
 };
-type InputState = { value: string; isEmpty: boolean };
 
 function SignUp() {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["signup-key"],
-    mutationFn: async (newUser: SignUp) => {
+    mutationFn: async (newUser: SignUPBody) => {
       const { data } = await axiosInstance.post("/auth/register", newUser);
       return data;
     },
@@ -31,13 +32,14 @@ function SignUp() {
       toast("something went wrong");
     },
   });
-  const defaultState: InputState = { value: "", isEmpty: false };
-  const [fstName, setFstName] = useState(defaultState);
-  const [lstName, setLstName] = useState(defaultState);
-  const [email, setEmail] = useState(defaultState);
-  const [password, setPassword] = useState(defaultState);
-  const [confirmpassword, setConfrimPassword] = useState(defaultState);
-  const [username, setUsername] = useState(defaultState);
+  const [signup, setsignup] = useState<SignUPBody>({
+    firstname: "",
+    lastname: "",
+    username: "",
+    password: "",
+    email: "",
+    confirmPassword: "",
+  });
   return (
     <Box
       width={"100%"}
@@ -48,115 +50,77 @@ function SignUp() {
       <Paper sx={{ width: "25rem", p: 3 }} elevation={7}>
         <Stack spacing={2}>
           <TextField
-            value={fstName.value}
-            error={fstName.isEmpty}
-            helperText={fstName.isEmpty ? "field is required" : false}
+            size="small"
+            value={signup.firstname}
+            error={isEmpty(signup.firstname as string)}
+            helperText={isRequired(signup.firstname)}
             label="frist name"
-            onChange={({ target }) => {
-              setFstName((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              });
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, firstname: value });
             }}
           />
           <TextField
-            value={lstName.value}
-            error={lstName.isEmpty}
-            helperText={lstName.isEmpty ? "field is required" : false}
+            value={signup.lastname}
+            size="small"
+            error={isEmpty(signup.lastname)}
+            helperText={isRequired(signup.lastname)}
             label="last name"
-            onChange={({ target }) =>
-              setLstName((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              })
-            }
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, lastname: value });
+            }}
             required
           />
           <TextField
-            value={username.value}
-            error={username.isEmpty}
-            helperText={username.isEmpty ? "field is required" : false}
-            onChange={({ target }) =>
-              setUsername((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              })
-            }
+            size="small"
+            value={signup.username}
+            error={isEmpty(signup.username)}
+            helperText={isRequired(signup.username)}
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, username: value });
+            }}
             label="UserName"
             required
           />
           <TextField
-            value={email.value}
+            value={signup.email}
+            size="small"
+            error={isEmpty(signup.email)}
+            helperText={isRequired(signup.email)}
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, email: value });
+            }}
             label="Email"
-            error={email.isEmpty}
-            helperText={email.isEmpty ? "field is required" : false}
-            onChange={({ target }) =>
-              setEmail((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              })
-            }
             required
           />
           <TextField
+            value={signup.password}
+            error={isEmpty(signup.password)}
+            size="small"
+            helperText={isRequired(signup.password)}
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, password: value });
+            }}
+            label="password"
             type="password"
-            error={password.isEmpty}
-            value={password.value}
-            helperText={password.isEmpty ? "field is required" : false}
-            onChange={({ target }) =>
-              setPassword((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              })
-            }
             required
           />
           <TextField
-            error={confirmpassword != password ? true : false}
-            helperText={
-              confirmpassword != password
-                ? "password do not match"
-                : confirmpassword.isEmpty && "field is require "
-            }
+            value={signup.confirmPassword}
+            error={signup.confirmPassword != signup.password}
+            helperText={isRequired(signup.confirmPassword)}
+            onChange={({ target: { value } }) => {
+              setsignup({ ...signup, confirmPassword: value });
+            }}
             type="password"
-            value={confirmpassword.value}
-            onChange={({ target }) =>
-              setConfrimPassword((prev) => {
-                if (prev.value == "")
-                  return { ...prev, value: target.value, isEmpty: true };
-                return { ...prev, value: target.value, isEmpty: false };
-              })
-            }
             label="Confirm password"
+            size="small"
             required
           />
           <Button
             variant="contained"
             loading={isPending}
             onClick={() => {
-              const data = [
-                fstName,
-                lstName,
-                email,
-                username,
-                password,
-                confirmpassword,
-              ];
-              for (const d of data) {
-                if (d.value == "") return;
-              }
-              mutate({
-                firstname: fstName.value,
-                lastname: lstName.value,
-                email: email.value,
-                username: username.value,
-                password: password.value,
-              });
+              mutate(signup);
             }}
           >
             sign up
