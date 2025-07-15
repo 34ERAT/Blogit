@@ -135,11 +135,11 @@ function Blog() {
             onClick={() => {
               mutateNewBlog(blog);
             }}
-            icon={<Save />}
+            icon={<Save color="primary" />}
             tooltipTitle={"save"}
           />
           <SpeedDialAction
-            icon={<ImageIcon />}
+            icon={<ImageIcon color="primary" />}
             tooltipTitle={"upload image"}
             onClick={() => {
               fileInputRef.current?.click();

@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
+import { hasempty } from "../../utils/textField";
 
 type Profile = {
   firstname: string;
@@ -43,12 +44,6 @@ function UserProfile() {
   });
   function isFull(input: string) {
     return input.length == 0 ? false : true;
-  }
-  function hasempty(profile: Profile) {
-    for (const value of Object.values(profile)) {
-      if (value.length == 0) return true;
-    }
-    return false;
   }
   return (
     <Box
@@ -100,7 +95,7 @@ function UserProfile() {
             required
           />
           <Button
-            disabled={hasempty(profile)}
+            disabled={hasempty(Object.values(profile))}
             loading={isPending}
             variant="contained"
             onClick={() => mutate(profile)}

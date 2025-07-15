@@ -1,25 +1,31 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Navigate, Outlet } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
 import useUserStore from "../store";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function PrivateRoutes() {
-  const { loginStatus } = useUserStore();
-  const { isSuccess, isLoading } = useQuery({
-    queryKey: ["checkLogin"],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/auth/me", {
+  const { loginStatus, setLoginStatus } = useUserStore();
+  const { mutate } = useMutation({
+    mutationKey: ["checkLogin"],
+    mutationFn: async () => {
+      const { data } = await axiosInstance.post("/auth/me", {
         withCredentials: true,
       });
       return data;
     },
-    refetchOnWindowFocus: true,
-    refetchOnMount: true, // important
+    onSuccess: (data: { status: boolean }) => {
+      setLoginStatus(data.status);
+    },
+    onError: () => {
+      toast("something went wrong");
+    },
   });
-
-  if (isLoading) return <div>Loading...</div>; // or a spinner
-
-  return loginStatus && isSuccess ? <Outlet /> : <Navigate to="/signin" />;
+  useEffect(() => {
+    mutate();
+  });
+  return loginStatus ? <Outlet /> : <Navigate to="/signin" />;
 }
 
 export default PrivateRoutes;
