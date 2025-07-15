@@ -52,7 +52,11 @@ export const logout = asyncHandler(
   },
 );
 export const checkLoginStatus = asyncHandler(
-  async (_req: Request, res: Response, _next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.userId) {
+      next(new Error());
+      return;
+    }
     res.status(200).json({ status: true });
   },
 );
