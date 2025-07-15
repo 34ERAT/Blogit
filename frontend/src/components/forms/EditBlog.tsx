@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
 const intialState: NewBlog = {
-  title: " ",
+  title: "",
   synopsis: "",
   featuredImage: faker.image.avatar(),
   content: "",

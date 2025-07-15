@@ -61,7 +61,7 @@ function BlogCard({ img, avater, id, title, synopsis, auther, owner }: Props) {
           width={"100%"}
           justifyContent={"space-between"}
         >
-          <Button onClick={() => navigate(`/blogs/${id}/Read`)} variant="text">
+          <Button onClick={() => navigate(`/${id}`)} variant="text">
             Read more
           </Button>
           {owner && (

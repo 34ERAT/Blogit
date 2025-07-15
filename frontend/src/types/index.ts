@@ -12,3 +12,9 @@ export type NewBlog = {
   User?: User;
   content?: string;
 };
+
+export type CreateBlog = {
+  title: string;
+  synopsis: string;
+  content: string;
+};

@@ -19,7 +19,8 @@ function App() {
       <NavBar />
       <Box pt={"4.7rem"} height={"100%"} display={"flex"}>
         <Routes>
-          <Route path="/" element={<Blogs />} />
+          <Route index element={<Blogs />} />
+          <Route path=":blogId" element={<ReadBlog />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/blogs">
@@ -27,7 +28,6 @@ function App() {
               <Route index path="" element={<Blog />} />
               <Route path=":blogId" element={<EditBlog />} />
             </Route>
-            <Route path=":blogId/Read" element={<ReadBlog />} />
           </Route>
           <Route path="/user/" element={<PrivateRoutes />}>
             <Route path="blogs" element={<UserBlog />} />
